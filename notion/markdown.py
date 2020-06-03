@@ -90,7 +90,11 @@ def _extract_text_and_format_from_ast(item):
         return item.get("literal", ""), ("c",)
 
     if item["type"] == "link":
-        return item.get("literal", ""), ("a", item.get("destination", "#"))
+        link_href = item.get("destination", "#")
+        # If the escape characters for '⸻' are in the destionation, convert
+        # them back to '-'
+        link_href = link_href.replace("%E2%B8%BB", "-")
+        return item.get("literal", ""), ("a", link_href)
 
     return item.get("literal", ""), ()
 
